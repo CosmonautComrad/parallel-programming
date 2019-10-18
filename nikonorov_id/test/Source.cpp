@@ -8,11 +8,14 @@
 using namespace std;
 double sequential_code(double* x, int N)
 {
+	double start;
 	double sum = 0;
+	start = MPI_Wtime();
 	for (int i = 0; i < N; i++)
 	{
 		sum += x[i];
 	}
+	printf("Sequential time=%f\n", (MPI_Wtime() - start));
 	return sum;
 }
 bool is_equal(double x, double y) 
@@ -30,7 +33,7 @@ void check(int N, double res1, double res2)
 	}
 	return;
 }
-int main()
+int main(int argc, char *argv[])
 {
 	double start; 
 	double* arr = NULL;
@@ -39,7 +42,15 @@ int main()
 	double sum, sum_all, res;
 	int ProcNum, ProcRank;
 	int N1 = 0;
-    int N = 50000000;
+	int N = 0;
+	if (argc < 2)
+	{
+		N = 20000000;
+	}
+	else
+	{
+		N = atoi(argv[1]);
+	}
 	srand(time(NULL));
 	MPI_Init(NULL, NULL);
 	MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
@@ -75,8 +86,8 @@ int main()
 	MPI_Reduce(&sum, &sum_all, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 	if (ProcRank == 0)
 	{
-		printf("Result=%10.2f\n", sum_all);
-		printf("Time=%f\n", (MPI_Wtime() - start));
+		printf("Result = %10.2f\n", sum_all);
+		printf("Mpi time = %f\n", (MPI_Wtime() - start));
 		check(N, sum_all, res);
 	}
 		
