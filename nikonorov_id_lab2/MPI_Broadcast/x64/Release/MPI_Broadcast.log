@@ -1,0 +1,11 @@
+﻿  Source.cpp
+C:\Users\chele\source\repos\MPI_Broadcast\MPI_Broadcast\Source.cpp(47,12): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+C:\Users\chele\source\repos\MPI_Broadcast\MPI_Broadcast\Source.cpp(72,1): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
+C:\Users\chele\source\repos\MPI_Broadcast\MPI_Broadcast\Source.cpp(93,17): warning C4305: =: усечение из "double" в "float"
+C:\Users\chele\source\repos\MPI_Broadcast\MPI_Broadcast\Source.cpp(94,17): warning C4305: =: усечение из "double" в "float"
+C:\Users\chele\source\repos\MPI_Broadcast\MPI_Broadcast\Source.cpp(95,18): warning C4305: =: усечение из "double" в "float"
+  Создание кода
+  Previous IPDB not found, fall back to full compilation.
+  All 17 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Создание кода завершено
+  MPI_Broadcast.vcxproj -> C:\Users\chele\source\repos\MPI_Broadcast\x64\Release\MPI_Broadcast.exe
