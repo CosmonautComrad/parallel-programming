@@ -5,6 +5,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <omp.h>
+#include <chrono>
 
 using namespace cv;
 using namespace std;
@@ -103,11 +104,15 @@ int main() {
 	cvtColor(image, gray_image, COLOR_BGR2GRAY);
 	cvtColor(image, my_result, COLOR_BGR2GRAY);
 
-	int k = 13;
+	int k = 3;
 
 	double** Kernel = createKernel(k, k);
+	auto begin = std::chrono::steady_clock::now();
 	InitKern(Kernel, k, 7);
 	Gauss(gray_image, my_result, Kernel, k);
+	auto end = std::chrono::steady_clock::now();
+	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+	cout << "The time is: " << elapsed_ms.count() << " ms\n";
 
 	imwrite("../../images/Gray_Image.jpg", gray_image);
 	namedWindow("my_result", WINDOW_AUTOSIZE);
