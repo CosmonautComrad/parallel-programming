@@ -1,8 +1,0 @@
-﻿  Source.cpp
-C:\Users\chele\source\repos\nikonorov_id\test\Source.cpp(54,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  Создание кода
-  2 of 9 functions (22.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
-  Создание кода завершено
-  test.vcxproj -> C:\Users\chele\source\repos\nikonorov_id\x64\Release\test.exe
