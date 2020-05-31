@@ -101,6 +101,18 @@ void Sequential_Gauss(const Mat& input, Mat& output, double* kernel, int kern_si
 	}
 }
 
+bool check(const Mat& image1, const Mat& image2)
+{
+	Mat res;
+	bitwise_xor(image1, image2, res);
+	if (countNonZero(res) > 0)
+		return false;
+
+	else
+		return true;
+	
+}
+
 int main(int argc, char** argv) {
 	string orig_image_path;
 	string result_image_path;
@@ -126,9 +138,11 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 	Mat gray_image;
-	Mat my_result;
+	Mat seq_result;
+	Mat OpenMP_result;
 	cvtColor(original_image, gray_image, COLOR_BGR2GRAY);
-	cvtColor(original_image, my_result, COLOR_BGR2GRAY);
+	cvtColor(original_image, seq_result, COLOR_BGR2GRAY);
+	cvtColor(original_image, OpenMP_result, COLOR_BGR2GRAY);
 
 	int k = 3;
 
@@ -137,24 +151,26 @@ int main(int argc, char** argv) {
 	InitKern(kernel, k, 7);
 
 	auto begin = std::chrono::steady_clock::now();
-	OpenMP_Gauss(gray_image, my_result, kernel, k, thread_nums);
+	OpenMP_Gauss(gray_image, seq_result, kernel, k, thread_nums);
 	auto end = std::chrono::steady_clock::now();
 	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 	cout << "The OpenMP time is: " << elapsed_ms.count() << " ms" << endl;
-
-	imwrite(result_image_path, my_result);
 	
 	auto s_begin = std::chrono::steady_clock::now();
-	Sequential_Gauss(gray_image, my_result, kernel, k);
+	Sequential_Gauss(gray_image, OpenMP_result, kernel, k);
 	auto s_end = std::chrono::steady_clock::now();
 	auto s_elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(s_end - s_begin);
 	cout << "The sequential time is: " << s_elapsed_ms.count() << " ms" << endl;
 
-	namedWindow("my_result", WINDOW_AUTOSIZE);
-	namedWindow("Gray image", WINDOW_AUTOSIZE);
-	imshow("my_result", my_result);
-	imshow("Gray image", gray_image);
-	waitKey(0);
+	if (check(seq_result, OpenMP_result))
+	{
+		imwrite(result_image_path, OpenMP_result);
+		namedWindow("my_result", WINDOW_AUTOSIZE);
+		namedWindow("Gray image", WINDOW_AUTOSIZE);
+		imshow("my_result", OpenMP_result);
+		imshow("Gray image", gray_image);
+		waitKey(0);
+	}
 	deletekernel(kernel, k);
 	return 0;
 }
